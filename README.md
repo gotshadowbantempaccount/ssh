@@ -23,6 +23,19 @@ The sshd configuration file in `/data/ssh/sshd_config` can be edited as well, bu
 
 The ssh daemon automatically starts on device boot. If this is undesired, you can create a file `/data/ssh/no-autostart`. It will not start the service then.
 
+`Example uploading SSH key script`
+```
+#adb devices to get device list
+#cd /folder_withauthorized_keys/
+adb -s DEVICENAME push authorized_keys /sdcard/Download/
+cp /sdcard/Download/authorized_keys /data/ssh/root/.ssh/authorized_keys
+cp /sdcard/Download/authorized_keys /data/ssh/shell/.ssh/authorized_keys
+chmod 600 /data/ssh/root/.ssh/authorized_keys
+chmod 600 /data/ssh/shell/.ssh/authorized_keys
+chown root:root /data/ssh/root/.ssh/authorized_keys
+chown root:root /data/ssh/shell/.ssh/authorized_keys
+```
+
 ## Usage
 
 Once you have written a valid SSH public key into an `authorized_keys` file (see section 'Configuration' above), you can connect to the device using `ssh shell@<device_ip>` (unprivileged access) or `ssh root@<device_ip>` (privileged access), while supplying the correct private key. You will drop into a shell on the device. sftp and rsync should work as usual.
